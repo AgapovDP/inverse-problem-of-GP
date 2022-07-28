@@ -7,38 +7,46 @@ Created on Tue Jul 26 23:59:16 2022
 
 
 import numpy as np
+import random 
 
-
-
+# тестовый вектор
 randomObjectVector = np.random.randint(2, size = (1,4))
 
 #Jones matrix of Linear Amplitude Anisotropy (LAA). 
-def matrixLAA():
-    M11 = 0
-    M12 = 0
-    M22 = 0
-    return [[M11,M12],[M12,M22]]
+def matrixLAA(theta, P, randomMod = True):
+    if randomMod: 
+        P = random.uniform(0,1)
+        theta = random.uniform(-np.Pi/2,np.Pi/2,)
+    M11 = np.cos(theta)**2 + P*np.sin(theta)**2
+    M12 = M21 = (1-P)*np.cos(theta)*np.sin(theta)
+    M22 = np.sin(theta)**2 + P*np.cos(theta)**2
+    return [[M11,M12],[M21,M22]]
 
 #Jones matrix of Linear Phase Anisotropy (LPA).
-def matrixLPA():
-    M11 = 0
-    M12 = 0
-    M22 = 0
-    return [[M11,M12],[M12,M22]]
+def matrixLPA(alpha, delta, randomMod = True):
+    if randomMod: 
+        delta = random.uniform(0,2*np.pi)
+        alpha = random.uniform(-np.Pi/2,np.Pi/2,)
+    M11 = np.cos(alpha)**2 + np.exp(-1j*delta)*np.sin(alpha)**2
+    M12 = M21 = (1-np.exp(-1j*delta))*np.cos(alpha)*np.sin(alpha)
+    M22 = np.sin(alpha)**2 + np.exp(-1j*delta)*np.cos(alpha)**2
+    return [[M11,M12],[M21,M22]]
 
 #Jones matrix of Circular Amplitude Anisotropy (CAA)
-def matrixCAA():
-    M11 = 0
-    M12 = 0
-    M22 = 0
-    return [[M11,M12],[M12,M22]]
+def matrixCAA(R,randomMod = True):
+    if randomMod: R = random.uniform(-1,1)
+    M11 = M22 = 1.
+    M12 = -1j*R
+    M21 = 1j*R
+    return [[M11,M12],[M21,M22]]
 
 #Jones matrix of Circular Phase Anisotropy (CPA)
-def matrixCPA():
-    M11 = 0
-    M12 = 0
-    M22 = 0
-    return [[M11,M12],[M12,M22]]
+def matrixCPA(phi,randomMod = True):
+    if randomMod: phi = random.uniform(0,2*np.Pi)
+    M11 =  M22 = np.cos(phi)
+    M12 = np.sin(phi)
+    M21 = -np.sin(phi)
+    return [[M11,M12],[M21,M22]]
 
 def calculationFinalMatrix(objectVector):
     matrix = [[1,0],[0,1]]
