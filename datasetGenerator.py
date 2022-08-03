@@ -57,27 +57,39 @@ def calculationFinalMatrix(objectVector):
     if objectVector[3] == 1: matrix = matrix.dot(matrixCPA())
     return matrix
 
+def randomNoise(value,noise):
+    return value + random.uniform(0,noise*value)
+
 #function to calculete all correlation functions
-def calculationCorrFunctions(matrix):
-    g1 = abs(matrix[0,0])**2
-    g2 = abs(matrix[1,0])**2
-    g3 = abs(matrix[1,1])**2
-    g4 = 0.5*abs(matrix[0,0]+matrix[1,0])**2
-    g5 = 0.5*abs(matrix[0,1]+matrix[1,1])**2
-    g6 = 0.5*abs(matrix[0,0]+1j*matrix[0,1])**2
-    g7 = 0.5*abs(matrix[1,0]+1j*matrix[1,1])**2
-    g8 = 0.25*abs(matrix[0,0]+matrix[1,0]+1j*(matrix[1,1]+matrix[0,1]))
+def calculationCorrFunctions(matrix, noise = 0):
+    g1 = randomNoise(abs(matrix[0,0])**2,noise)
+    g2 = randomNoise(abs(matrix[1,0])**2,noise)
+    g3 = randomNoise(abs(matrix[1,1])**2,noise)
+    g4 = randomNoise(0.5*abs(matrix[0,0]+matrix[1,0])**2,noise)
+    g5 = randomNoise(0.5*abs(matrix[0,1]+matrix[1,1])**2,noise)
+    g6 = randomNoise(0.5*abs(matrix[0,0]+1j*matrix[0,1])**2,noise)
+    g7 = randomNoise(0.5*abs(matrix[1,0]+1j*matrix[1,1])**2,noise)
+    g8 = randomNoise(0.25*abs(matrix[0,0]+matrix[1,0]+1j*(matrix[1,1]+matrix[0,1])),noise)
     return np.array([g1,g2,g3,g4,g5,g6,g7,g8])
 
-def saveData(data,name):
-    np.save(name,data)
 
-def main(lenDataset = 100):
+def dataGeneratorRandomObject(lenDataset = 100):
     data = []
     for i in range(lenDataset):
         randomObjectVector = np.random.randint(2, size = (1,4))[0]
         matrix = calculationFinalMatrix(randomObjectVector)
-        corrFunctions = calculationCorrFunctions(matrix)
-        data.append([matrix,corrFunctions])
+        g_arr = calculationCorrFunctions(matrix)
+        data.append([g_arr,matrix])
     np.save("test",data)
     return 0
+
+def dataGeneratorLAA(lenDataset = 100):
+    data = []
+    randomObjectVector = np.array([1,0,0,0])
+    for i in range(lenDataset):
+        matrix = calculationFinalMatrix(randomObjectVector)
+        g_arr = calculationCorrFunctions(matrix)
+        data.append([np.array([g_arr[0],g_arr[2],g_arr[3]]),matrix])
+    np.save("testLAA",data)
+    return 0
+
