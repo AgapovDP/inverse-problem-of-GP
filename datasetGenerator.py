@@ -2,15 +2,13 @@
 """
 Created on Tue Jul 26 23:59:16 2022
 
-@author: Дима
+@author: Agapov Dmitriy
 """
 # матрицы Джонса определены в соответствии со статьей DOI: 10.1103/PhysRevE.74.056607
 
 import numpy as np
 import random 
 
-# тестовый вектор
-randomObjectVector = np.random.randint(2, size = (1,4))
 
 #Jones matrix of Linear Amplitude Anisotropy (LAA). 
 def matrixLAA(theta = 0, P = 1, randomMod = True):
@@ -93,3 +91,4 @@ def dataGeneratorLAA(lenDataset = 100):
     np.save("testLAA",data)
     return 0
 
+dataGeneratorLAA(10)
