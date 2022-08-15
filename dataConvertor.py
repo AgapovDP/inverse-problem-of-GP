@@ -16,9 +16,9 @@ def dataConventor(data):
     outputData = []
     for i in data:
         inputData.append(i[0])
-        vector = [i[1][0,0].real,i[1][1,0].real,i[1][1,1].real,\
-                  i[1][0,0].imag,i[1][0,1].imag,i[1][1,0].imag,\
-                      i[1][1,1].imag]
+        vector = [i[1][0,0].real,i[1][1,0].real,i[1][0,1].real,\
+                  i[1][1,1].real, i[1][0,0].imag,i[1][0,1].imag,\
+                      i[1][1,0].imag,i[1][1,1].imag]
         outputData.append(vector)
     return tensor(inputData),tensor(outputData)
 
@@ -30,9 +30,7 @@ def dataBatching(data,batch_len=1):
     for i in range(len(inputData)):
         batchedData.append([inputData[i],outputData[i]])
     return batchedData
-        
-test = np.load("testLAA.npy",allow_pickle=True)
-train = dataBatching(dataConventor(test),10)
+ 
 
 
 
