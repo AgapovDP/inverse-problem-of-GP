@@ -71,22 +71,22 @@ def calculationCorrFunctions(matrix, noise = 0):
     return np.array([g1,g2,g3,g4,g5,g6,g7,g8])
 
 
-def dataGeneratorRandomObject(name = "test", lenDataset = 100):
+def dataGeneratorRandomObject(name = "test", lenDataset = 100, noise = 0):
     data = []
     for i in range(lenDataset):
         randomObjectVector = np.random.randint(2, size = (1,4))[0]
         matrix = calculationFinalMatrix(randomObjectVector)
-        g_arr = calculationCorrFunctions(matrix)
+        g_arr = calculationCorrFunctions(matrix,noise)
         data.append([g_arr,matrix])
     np.save(name,data)
     return 0
 
-def dataGeneratorLAA(name = "testLAA",lenDataset = 100):
+def dataGeneratorLAA(name = "testLAA",lenDataset = 100,noise = 0):
     data = []
     randomObjectVector = np.array([1,0,0,0])
     for i in range(lenDataset):
         matrix = calculationFinalMatrix(randomObjectVector)
-        g_arr = calculationCorrFunctions(matrix)
+        g_arr = calculationCorrFunctions(matrix,noise)
         data.append([np.array([g_arr[0],g_arr[2],g_arr[3]]),matrix])
     np.save(name,data)
     return 0

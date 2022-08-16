@@ -19,7 +19,10 @@ standartSeq = nn.Sequential(
      nn.Conv2d(20, 50, 2, padding=2),
      nn.Flatten(),
      nn.ReLU(),
-     nn.Linear(24200, 7)
+     nn.Linear(24200, 1000),
+     nn.ReLU(),
+     nn.Linear(1000, 8)
+     
 
 )
 
@@ -38,15 +41,14 @@ class GPNN(nn.Module):
 import torch
 import torch.optim as optim
 
-model = GPNN()
-model = model.float()
 
-def trainGPNN(model, trainloader,testloader):
+def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSELoss,\
+              optimizer = optim.Adam,learning_rate = 0.001):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device:', device)
-    criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    num_epochs = 20
+    criterion = criterion()
+    optimizer = optimizer(model.parameters(), lr=learning_rate)
+    num_epochs = num_epochs
     loss_hist = [] # for plotting
     val_arr_test = []
     val_arr_train = []
@@ -63,30 +65,19 @@ def trainGPNN(model, trainloader,testloader):
             optimizer.step()
             hist_loss += loss.item()
         loss_hist.append(hist_loss /len(trainloader))
-        #val_arr_train.append(validate(model,trainloader,device))
-        #val_arr_test.append(validate(model,testloader,device))
-        print(f"Epoch={epoch} loss={loss_hist[epoch]:.4f}")
-    return loss_hist
+        val_arr_train.append(validate(model,trainloader))
+        val_arr_test.append(validate(model,testloader))
+        print(f"Epoch={epoch} loss={loss_hist[epoch]:.5f}")
+    return loss_hist,val_arr_train,val_arr_test
 
 def validate(model,data):
-    correct = 0
-    total = 0
     numBatch = 0
-    with torch.no_grad():
-        while numBatch < len(data):
-            value, labels = data[numBatch]
-            labels = labels.float()
-            numBatch = numBatch + 1
-            outputs = model(value.float())
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels.float()).sum().item()
-
-    return correct / total 
+    total = 0
+    while numBatch < len(data):
+        value, labels = data[numBatch]
+        numBatch = numBatch + 1
+        total += (abs(model(value.float())-labels)**2).mean()
+    return total/len(data)
+    
 
 
-testData = np.load("testLAA_test.npy",allow_pickle=True)
-trainData = np.load("testLAA_train.npy",allow_pickle=True)
-trainData = dataBatching(dataConventor(trainData),100)
-testData = dataBatching(dataConventor(testData),100)
-trainGPNN(model,trainData,testData)
