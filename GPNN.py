@@ -76,7 +76,7 @@ def validate(model,data):
     while numBatch < len(data):
         value, labels = data[numBatch]
         numBatch = numBatch + 1
-        total += (abs(model(value.float())-labels)**2).mean()
+        total += (abs(model(value.float())-labels)**2).mean(0)
     return total/len(data)
     
 
