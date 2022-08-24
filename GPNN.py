@@ -11,7 +11,7 @@ from dataConvertor import dataConvertor,dataBatching
 import numpy as np
 
 standartSeq = nn.Sequential(
-     nn.Linear(8, 256),
+     nn.Linear(9, 256),
      nn.Unflatten(1, (1,16, 16)),
      nn.ReLU(),
      nn.Conv2d(1, 15, 3, padding=2),
@@ -22,7 +22,9 @@ standartSeq = nn.Sequential(
      nn.Dropout(0.3),
      nn.Linear(12000, 1000),
      nn.ReLU(),
-     nn.Linear(1000, 8)  
+     nn.Linear(1000, 100),
+     nn.ReLU(),
+     nn.Linear(100, 8) 
 
 )
 
@@ -44,7 +46,7 @@ import torch.optim as optim
 
 def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSELoss,\
               optimizer = optim.Adam,learning_rate = 0.001):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cuda')
     print('Using device:', device)
     criterion = criterion()
     optimizer = optimizer(model.parameters(), lr=learning_rate)
