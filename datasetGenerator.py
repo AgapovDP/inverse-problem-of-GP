@@ -62,13 +62,14 @@ def randomNoise(value,noise):
 def calculationCorrFunctions(matrix, noise = 0):
     g1 = randomNoise(abs(matrix[0,0])**2,noise)
     g2 = randomNoise(abs(matrix[1,0])**2,noise)
-    g3 = randomNoise(abs(matrix[1,1])**2,noise)
-    g4 = randomNoise(0.5*abs(matrix[0,0]+matrix[1,0])**2,noise)
-    g5 = randomNoise(0.5*abs(matrix[0,1]+matrix[1,1])**2,noise)
-    g6 = randomNoise(0.5*abs(matrix[0,0]+1j*matrix[0,1])**2,noise)
-    g7 = randomNoise(0.5*abs(matrix[1,0]+1j*matrix[1,1])**2,noise)
-    g8 = randomNoise(0.25*abs(matrix[0,0]+matrix[1,0]+1j*(matrix[1,1]+matrix[0,1])),noise)
-    return np.array([g1,g2,g3,g4,g5,g6,g7,g8])
+    g3 = randomNoise(abs(matrix[0,1])**2,noise)
+    g4 = randomNoise(abs(matrix[1,1])**2,noise)
+    g5 = randomNoise(0.5*abs(matrix[0,0]+matrix[1,0])**2,noise)
+    g6 = randomNoise(0.5*abs(matrix[0,1]+matrix[1,1])**2,noise)
+    g7 = randomNoise(0.5*abs(matrix[0,0]+1j*matrix[0,1])**2,noise)
+    g8 = randomNoise(0.5*abs(matrix[1,0]+1j*matrix[1,1])**2,noise)
+    g9 = randomNoise(0.25*abs(matrix[0,0]+matrix[1,0]+1j*(matrix[1,1]+matrix[0,1])),noise)
+    return np.array([g1,g2,g3,g4,g5,g6,g7,g8,g9])
 
 
 def dataGeneratorRandomObject(name = "test", lenDataset = 100, noise = 0):
