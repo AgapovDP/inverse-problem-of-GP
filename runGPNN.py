@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 model = GPNN.GPNN()
 model = model.float()
-testData = np.load("datasets/datasetNoNoise_randomObject_train.npy",allow_pickle=True)
-trainData = np.load("datasets/datasetNoNoise_randomObject_test.npy",allow_pickle=True)
+testData = np.load("datasets/datasetNoNoise_randomObject_train_2400.npy",allow_pickle=True)
+trainData = np.load("datasets/datasetNoNoise_randomObject_test_2400.npy",allow_pickle=True)
 trainData = dataBatching(dataConvertor(trainData),150)
 testData = dataBatching(dataConvertor(testData),150)
 loss, trainVal, testVal = GPNN.trainGPNN(model,trainData,testData,num_epochs = 15)
