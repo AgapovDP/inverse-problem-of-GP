@@ -11,7 +11,7 @@ import numpy as np
 
 
 
-def dataConventor(data):
+def dataConvertor(data):
     inputData = []
     outputData = []
     for i in data:

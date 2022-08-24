@@ -7,22 +7,22 @@ Created on Tue Jul 26 23:59:16 2022
 
 
 import torch.nn as nn
-from dataConvertor import dataConventor,dataBatching
+from dataConvertor import dataConvertor,dataBatching
 import numpy as np
 
 standartSeq = nn.Sequential(
-     nn.Linear(3, 256),
+     nn.Linear(8, 256),
      nn.Unflatten(1, (1,16, 16)),
      nn.ReLU(),
-     nn.Conv2d(1, 20, 2, padding=2),
+     nn.Conv2d(1, 15, 3, padding=2),
      nn.ReLU(),
-     nn.Conv2d(20, 50, 2, padding=2),
+     nn.Conv2d(15, 30, 3, padding=2),
      nn.Flatten(),
      nn.ReLU(),
-     nn.Linear(24200, 1000),
+     nn.Dropout(0.3),
+     nn.Linear(12000, 1000),
      nn.ReLU(),
-     nn.Linear(1000, 8)
-     
+     nn.Linear(1000, 8)  
 
 )
 
