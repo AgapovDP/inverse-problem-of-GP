@@ -78,7 +78,7 @@ def dataGeneratorRandomObject(name = "test", lenDataset = 100, noise = 0):
         randomObjectVector = np.random.randint(2, size = (1,4))[0]
         matrix = calculationFinalMatrix(randomObjectVector)
         g_arr = calculationCorrFunctions(matrix,noise)
-        data.append([g_arr,matrix])
+        data.append([g_arr,matrix,randomObjectVector])
     np.save(name,data)
     return 0
 

@@ -11,15 +11,22 @@ import random
 import GPNN
 from dataConvertor import dataConvertor,dataBatching
 import matplotlib.pyplot as plt
+from torch import nn,manual_seed
+
+
+manual_seed(42)
+random.seed(42)
+np.random.seed(42)
 
 
 model = GPNN.GPNN()
 model = model.float()
-testData = np.load("datasets/datasetNoNoise_randomObject_train_2400.npy",allow_pickle=True)
-trainData = np.load("datasets/datasetNoNoise_randomObject_test_2400.npy",allow_pickle=True)
+testData = np.load("datasets/datasetNoNoise_randomObject_train_3000.npy",allow_pickle=True)
+trainData = np.load("datasets/datasetNoNoise_randomObject_test_3000.npy",allow_pickle=True)
 trainData = dataBatching(dataConvertor(trainData),150)
 testData = dataBatching(dataConvertor(testData),150)
-loss, trainVal, testVal = GPNN.trainGPNN(model,trainData,testData,num_epochs = 15)
+loss, trainVal, testVal, acc_train, acc_test = GPNN.trainGPNN(model,trainData,\
+                       testData,num_epochs = 30,criterion = nn.CrossEntropyLoss)
 
 
 # просто промежуточная функция для формирования графиков. Удалю попозже

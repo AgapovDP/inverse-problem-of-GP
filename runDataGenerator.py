@@ -9,7 +9,7 @@ import datasetGenerator
 
 
 #длина первой группы данных
-lenFirstGroup = 2400
+lenFirstGroup = 2000
 NOISE_1 = 0.0
 NOISE_2 = 0.01
 NOISE_3 = 0.05
