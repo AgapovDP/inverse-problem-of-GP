@@ -7,7 +7,6 @@ Created on Tue Jul 26 23:59:16 2022
 
 
 import torch.nn as nn
-from dataConvertor import dataConvertor,dataBatching
 import numpy as np
 
 standartSeq = nn.Sequential(
@@ -45,10 +44,9 @@ import torch
 import torch.optim as optim
 
 
-def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSELoss,\
+def trainGPNN(model, trainloader,testloader,device = 'cpu', num_epochs = 2, criterion = nn.MSELoss,\
               optimizer = optim.Adam,learning_rate = 0.001,maxBatch = 10):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('Using device:', device)
+
     criterion = criterion()
     optimizer = optimizer(model.parameters(), lr=learning_rate)
     num_epochs = num_epochs
@@ -60,8 +58,9 @@ def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSEL
     for epoch in range(num_epochs):
         hist_loss = 0
         numBatch = 0
-        while numBatch < maxBatch:#len(trainloader):
+        while numBatch < maxBatch:
             corrFunc, values, labels = trainloader[numBatch]
+            corrFunc, values, labels = corrFunc.to(device), values.to(device), labels.to(device)
             numBatch = numBatch + 1
             optimizer.zero_grad()
             Y_pred = model(corrFunc.float())
@@ -70,14 +69,14 @@ def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSEL
             optimizer.step()
             hist_loss += loss.item()
         loss_hist.append(hist_loss /len(trainloader))
-        acc_test.append(calaculate_accuracy(model,testloader))
-        acc_train.append(calaculate_accuracy(model,trainloader))
+        acc_test.append(calaculate_accuracy(model,testloader,device))
+        acc_train.append(calaculate_accuracy(model,trainloader,device))
         #val_arr_train.append(validate(model,trainloader))
         #val_arr_test.append(validate(model,testloader))
-        print(f"Epoch={epoch} loss={loss_hist[epoch]:.5f}")
+        if epoch%10 == 0: print(f"Epoch={epoch} loss={loss_hist[epoch]:.5f}")
     return loss_hist,val_arr_train,val_arr_test,acc_train,acc_test
 
-def validate(model,data):
+def validate(model,data,device = 'cpu'):
     numBatch = 0
     total = 0
     while numBatch < len(data):
@@ -86,11 +85,12 @@ def validate(model,data):
         total += (abs(model(corrFunc.float())-values.float())**2).mean(0)
     return total/len(data)
 
-def calaculate_accuracy(model, data):
+def calaculate_accuracy(model, data, device = 'cpu'):
     correct, total = 0, 0 
     numBatch = 0
     while numBatch < len(data):
         corrFunc, values, labels = data[numBatch]
+        corrFunc, values, labels = corrFunc.to(device), values.to(device), labels.to(device)
         numBatch = numBatch + 1
         Y_pred = model.forward(corrFunc.float()) # get output
         _, predicted = torch.max(Y_pred.data, 1) # get predicted class
