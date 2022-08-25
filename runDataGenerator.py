@@ -9,7 +9,7 @@ import datasetGenerator
 
 
 #длина первой группы данных
-lenFirstGroup = 2000
+lenFirstGroup = 12000
 NOISE_1 = 0.0
 NOISE_2 = 0.01
 NOISE_3 = 0.05
@@ -17,8 +17,8 @@ NOISE_3 = 0.05
 
 datasetGenerator.dataGeneratorRandomObject("datasets/datasetNoNoise_randomObject_train_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
 datasetGenerator.dataGeneratorRandomObject("datasets/datasetNoNoise_randomObject_test_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
-datasetGenerator.dataGeneratorLAA("datasets/datasetNoNoise_LAA_train_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
-datasetGenerator.dataGeneratorLAA("datasets/datasetNoNoise_LAA_test_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
+#datasetGenerator.dataGeneratorLAA("datasets/datasetNoNoise_LAA_train_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
+#datasetGenerator.dataGeneratorLAA("datasets/datasetNoNoise_LAA_test_"+str(lenFirstGroup),lenFirstGroup,NOISE_1)
 
 #datasetGenerator.dataGeneratorRandomObject("datasets/datasetLowNoise_randomObject_train_"+str(lenFirstGroup),lenFirstGroup,NOISE_2)
 #datasetGenerator.dataGeneratorRandomObject("datasets/datasetLowNoise_randomObject_test_"+str(lenFirstGroup),lenFirstGroup,NOISE_2)

@@ -20,9 +20,10 @@ standartSeq = nn.Sequential(
      nn.Flatten(),
      nn.ReLU(),
      nn.Dropout(0.3),
-     nn.Linear(12000, 1000),
+     nn.Linear(12000, 2000),
      nn.ReLU(),
-     nn.Linear(1000, 100),
+     nn.Dropout(0.3),
+     nn.Linear(2000, 100),
      nn.ReLU(),
      nn.Linear(100, 16) 
 
@@ -45,7 +46,7 @@ import torch.optim as optim
 
 
 def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSELoss,\
-              optimizer = optim.Adam,learning_rate = 0.001):
+              optimizer = optim.Adam,learning_rate = 0.001,maxBatch = 10):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device:', device)
     criterion = criterion()
@@ -59,7 +60,7 @@ def trainGPNN(model, trainloader,testloader, num_epochs = 2, criterion = nn.MSEL
     for epoch in range(num_epochs):
         hist_loss = 0
         numBatch = 0
-        while numBatch < len(trainloader):
+        while numBatch < maxBatch:#len(trainloader):
             corrFunc, values, labels = trainloader[numBatch]
             numBatch = numBatch + 1
             optimizer.zero_grad()
