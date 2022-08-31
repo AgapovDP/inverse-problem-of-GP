@@ -47,7 +47,7 @@ def matrixCPA(phi = 0,randomMod = True):
     return np.array([[M11,M12],[M21,M22]])
 
 #function to calculete final Jones matrix
-def calculationFinalMatrix(objectVector):
+def calculationFinalMatrix(objectVector, transmission = 1.):
     matrix = np.array([[1,0],[0,1]])
     if objectVector[0] == 1: matrix = matrix.dot(matrixLAA())
     if objectVector[1] == 1: matrix = matrix.dot(matrixLPA())
@@ -92,4 +92,15 @@ def dataGeneratorLAA(name = "testLAA",lenDataset = 100,noise = 0):
     np.save(name,data)
     return 0
 
-
+def dataGeneratorHWP(name = "testHWP",lenDataset = 100,noise = 0):
+    data = []
+    for i in range(lenDataset):
+        #delta = random.uniform(0,2*np.pi)
+        alpha = random.uniform(-np.pi/4,np.pi/4,)
+        matrix = matrixLPA(alpha = alpha, delta = np.pi, randomMod = False)
+        g_arr = calculationCorrFunctions(matrix,noise)
+        #data.append([g_arr,[alpha]])
+        #data.append([np.array([g_arr[0],g_arr[1],g_arr[4]]),[alpha]])
+        data.append([np.array([g_arr[0],g_arr[1]]),[abs(alpha)]])
+    np.save(name,data)
+    return 0
