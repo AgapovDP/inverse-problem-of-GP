@@ -27,5 +27,5 @@ def save_Object(path, lenDataset):
         
                  
 if __name__ == "__main__":
-    save_Object("test",5)
+    save_Object("datasetExample",10)
     

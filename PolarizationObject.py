@@ -46,6 +46,9 @@ def matrixCPA(phi = 0,randomMod = True):
 
 
 
+# This class of polarization objcts.
+#
+
 class PolarizationObject():
     
     def __init__(self):
@@ -65,14 +68,19 @@ class PolarizationObject():
         
         self.transmission = 1. # isotropic coefficient of transmission
         self.classNumber = 0. # не уверен в необходимости этого параметры, пока не использую 
-        self.classVector = np.array([0,0,0,0]) # this vector describe class of object 
+        self.classVector = np.array([0,0,0,0]) # this vector describe class of object
+        #classVector[0] - Existence of LAA
+        #classVector[1] - Existence of LPA
+        #classVector[2] - Existence of CAA
+        #classVector[3] - Existence of CPA
+        
         self.setOfCorrFunc = np.nan # set of value correlation functions 
         self.setOfParametrs = np.array([self.transmission, self.theta_LAA, self.value_LAA,\
                                         self.theta_LPA,self.value_LPA, self.value_CAA,\
                                             self.phi_CPA, self.transmission],np.single)
             # set, which contains  all  parametrs
             
-    #This function randomly changes the properties of an object
+    #This method randomly changes the properties of an object
     def change_properties(self, transmission = np.nan):
         
         if np.isnan(transmission):
@@ -81,6 +89,7 @@ class PolarizationObject():
             self.transmission = transmission
             
         self.classVector = np.random.randint(2, size = (1,4))[0]
+    
         jonesMatrixLAA = jonesMatrixLPA = jonesMatrixCAA = \
             jonesMatrixCPA = np.array([[1.,0.],[0.,1.]],np.single)
             
@@ -111,7 +120,7 @@ class PolarizationObject():
         self.jonesMatrix = self.transmission*jonesMatrixLAA.dot(jonesMatrixLPA).\
                                 dot(jonesMatrixCAA).dot(jonesMatrixCPA)
         
-    #This function calculates all normalized correlation functions        
+    #This method calculates all normalized correlation functions        
     def calculation_Corr_Functions(self):
         g1 = abs(self.jonesMatrix[0,0])**2
         g2 = abs(self.jonesMatrix[1,0])**2
@@ -126,7 +135,7 @@ class PolarizationObject():
             
         self.setOfCorrFunc =  np.array([g1,g2,g3,g4,g5,g6,g7,g8,g9],np.single)
         
-    #This function emulates noise (noiseValue < 1.)     
+    #This method emulates noise (noiseValue < 1.)     
     def noise_Simulation(self, noiseValue = 0.):
         for i in range(len(self.setOfCorrFunc)):
             self.setOfCorrFunc[i] = self.setOfCorrFunc[i] + random.uniform(-noiseValue,noiseValue)
